@@ -26,6 +26,9 @@ app.use(cors());
 const postRoutes = require("./routes/posts"); 
 app.use("/api/posts", postRoutes);
 
+const userRoutes = require('./routes/users'); // Adjust path as necessary
+app.use('/api/users', userRoutes);
+
 // Choose a port to listen on
 const PORT = process.env.PORT || 5000;
 
