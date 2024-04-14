@@ -24,14 +24,15 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {
-  try {
-    const posts = await Post.find();
-    res.json(posts);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+router.get('/', async (req, res) => {
+    try {
+      const posts = await Post.find().populate('author', 'username');  // Only populates the 'username' field of the author
+      res.json(posts);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+  
 
 router.get("/:id", async (req, res) => {
   try {

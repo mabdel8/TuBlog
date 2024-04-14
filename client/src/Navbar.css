@@ -1,0 +1,24 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    margin: 20px 15%; /* Adjust these margins to control how much space is on the sides */
+}
+
+.nav-logo a {
+    text-decoration: none;
+    font-size: 36px;
+    color: #333;
+}
+
+.nav-links a {
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 24px;
+    color: #555;
+}
+
+.nav-links a:hover {
+    color: #000;
+}
