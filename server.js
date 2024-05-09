@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const authRoute = require("./routes/AuthRoute");
 
 // Connect to MongoDB
 mongoose
@@ -19,9 +21,15 @@ const app = express();
 app.use(bodyParser.json());
 
 // CORS Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 
-
+app.use(cookieParser());
 // Routes
 const postRoutes = require("./routes/posts"); 
 app.use("/api/posts", postRoutes);
@@ -34,3 +42,7 @@ const PORT = process.env.PORT || 5000;
 
 // Starting the server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+app.use(express.json());
+
+app.use("/", authRoute);
