@@ -47,9 +47,9 @@ const Home = () => {
           <Link to="/categories">Categories</Link>
 
           <Link>
-            Welcome <span id="user_name">{username}</span>
+            Welcome, <span id="user_name">{username}</span>
           </Link>
-          <button onClick={Logout}>LOGOUT</button>
+          <button className="bg-transparent hover:bg-blue-500 text-amber-400 font-semibold hover:text-white py-2 px-4 border border-amber-400 hover:border-transparent rounded mx-2" onClick={Logout}>LOGOUT</button>
         </div>
       </nav>
 
@@ -58,8 +58,13 @@ const Home = () => {
         <h1 id="main-heading">
           Welcome back <span id="tiger-heading">tiger</span>,
         </h1>
-      </header>
-      <Posts />
+          </header>
+          <div className="grid grid-cols-12 gap-4 mx-64 relative w-auto z-10">
+              <div className="hidden overflow-visible relative lg:flex lg:flex-col lg:gap-3 lg:col-span-2 pr-4 mt-10">Side bar</div>
+              <Posts /> 
+              <div className="hidden lg:block lg:col-span-4 mt-10">Side bar 2</div>
+          </div>
+
     </div>
   );
 };
