@@ -92,7 +92,7 @@ const Login = () => {
             Log in
           </button>
           <span className="block text-sm text-center text-gray-600">
-            Already have an account? <Link to="/signup" className="text-gold-500 hover:text-gold-600">Signup</Link>
+            Already have an account? <Link to="/signup" className="text-amber-500 hover:text-amber-600">Signup</Link>
           </span>
         </form>
         <ToastContainer />

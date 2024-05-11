@@ -6,7 +6,14 @@ import { useCookies } from "react-cookie";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useAuth } from "../AuthContext";
-import { Newspaper, Vote, Bike, Briefcase } from "lucide-react";
+import {
+  Newspaper,
+  Vote,
+  Bike,
+  Briefcase,
+  Bookmark,
+  Heart,
+} from "lucide-react";
 import { formatDistanceToNow, parseISO } from "date-fns";
 
 const Home = () => {
@@ -24,6 +31,7 @@ const Home = () => {
   });
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const categories = ["fun", "politics", "sports", "job", "technology"];
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -136,13 +144,13 @@ const Home = () => {
     } catch (error) {
       console.error("Error deleting article:", error);
     }
-    };
-    
-      // Filter posts based on search query and selected category
-  const filteredPosts = posts.filter(post => {
+  };
+
+  // Filter posts based on search query and selected category
+  const filteredPosts = posts.filter((post) => {
     return (
-      (post.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-      post.content.toLowerCase().includes(searchQuery.toLowerCase())) &&
+      (post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        post.content.toLowerCase().includes(searchQuery.toLowerCase())) &&
       (selectedCategory ? post.category === selectedCategory : true)
     );
   });
@@ -261,14 +269,18 @@ const Home = () => {
                 placeholder="Content"
                 className="w-full mb-2 p-2 border rounded"
               />
-              <input
-                type="text"
+              <select
                 name="category"
                 value={newPost.category}
                 onChange={handleInputChange}
-                placeholder="Category"
-                className="w-full mb-2 p-2 border rounded"
-              />
+                className="w-full mb-2 p-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500"
+              >
+                {categories.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
               <button
                 type="submit"
                 className="rounded-lg py-2 px-4 text-center text-white bg-blue-400 hover:bg-blue-500"
@@ -314,6 +326,26 @@ const Home = () => {
                 placeholder={`Add A Comment...`}
                 required
               ></textarea>
+              <div className="flex gap-2 justify-end">
+                <a href="">
+                  <Bookmark
+                    className="self-center mr-1 relative top-2"
+                    size={24}
+                    color="#000000"
+                    strokeWidth={1}
+                    absoluteStrokeWidth
+                  />
+                </a>
+                <a href="">
+                  <Heart
+                    className="self-center mr-1 relative top-2"
+                    size={24}
+                    color="#000000"
+                    strokeWidth={1}
+                    absoluteStrokeWidth
+                  />
+                </a>
+              </div>
             </div>
           ))}
         </div>
