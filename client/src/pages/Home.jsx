@@ -35,7 +35,7 @@ const Home = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/posts");
+        const response = await axios.get("https://tu-blog-server.vercel.app/api/posts");
         setPosts(response.data);
         // Sort posts by date and get the latest ones
         const sortedPosts = response.data.sort(
@@ -56,7 +56,7 @@ const Home = () => {
         navigate("/login");
       }
       const { data } = await axios.post(
-        "http://localhost:5000",
+        "https://tu-blog-server.vercel.app",
         {},
         { withCredentials: true }
       );
@@ -78,7 +78,7 @@ const Home = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/posts");
+        const response = await axios.get("https://tu-blog-server.vercel.app/api/posts");
         setPosts(response.data);
       } catch (error) {
         console.error("Error fetching data: ", error);
@@ -100,7 +100,7 @@ const Home = () => {
       // Add currentUser.id to the new post data
       // console.log(currentUser);
       const res = await axios.get(
-        `http://localhost:5000/api/users/${username}`
+        `https://tu-blog-server.vercel.app/api/users/${username}`
       );
       console.log(res.data);
       const postData = {
@@ -108,7 +108,7 @@ const Home = () => {
         author: res.data._id,
       };
       const response = await axios.post(
-        "http://localhost:5000/api/posts",
+        "https://tu-blog-server.vercel.app/api/posts",
         postData,
         {
           headers: { Authorization: `Bearer ${cookies.token}` },
@@ -131,7 +131,7 @@ const Home = () => {
   const handleDelete = async (postId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:5000/api/posts/${postId}`,
+        `https://tu-blog-server.vercel.app/api/posts/${postId}`,
         {
           headers: { Authorization: `Bearer ${cookies.token}` },
         }
