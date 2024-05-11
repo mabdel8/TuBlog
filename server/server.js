@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 // CORS Middleware
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: ["tu-blog-server.vercel.app"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
