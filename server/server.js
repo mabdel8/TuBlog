@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 // CORS Middleware
 app.use(
   cors({
-    origin: ["tu-blog-server.vercel.app"],
+    origin: ["tu-blog-server-git-main-mabdel8s-projects.vercel.app"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
