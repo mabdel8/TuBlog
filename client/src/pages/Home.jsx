@@ -7,6 +7,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "../Navbar.css";
 import { useAuth } from "../AuthContext";
+import { Newspaper, Vote, Bike, Briefcase } from "lucide-react";
 
 const Home = () => {
   const { currentUser } = useAuth();
@@ -31,7 +32,7 @@ const Home = () => {
         { withCredentials: true }
       );
       const { status, user } = data;
-      setUsername(user);
+        setUsername(user);
       return status
         ? toast(`Hello ${user}`, {
             position: "top-right",
@@ -67,22 +68,28 @@ const Home = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/posts",
-        newPost,
-        {
-          headers: { Authorization: `Bearer ${cookies.token}` },
-        }
-      );
-      if (response.data.success) {
-        setPosts([...posts, response.data.post]);
-        setNewPost({ title: "", content: "", category: "" });
-        setShowForm(false);
+        // Add currentUser.id to the new post data
+        // console.log(currentUser);
+        const res = await axios.get(`http://localhost:5000/api/users/${username}`)
+        console.log(res.data);
+      const postData = {
+        ...newPost,
+        author: res.data._id,
+      };
+      const response = await axios.post('http://localhost:5000/api/posts', postData, {
+        headers: { Authorization: `Bearer ${cookies.token}` }
+      });
+        console.log(response);
+      if (response.status == 201) {
+        setPosts([...posts, response.data]); // Update posts state with new post
+        setNewPost({ title: '', content: '', category: '' });
+          setShowForm(false);
+          console.log("Added article");
       } else {
-        console.error("Failed to add article");
+        console.error('Failed to add article');
       }
     } catch (error) {
-      console.error("Error adding article:", error);
+      console.error('Error adding article:', error);
     }
   };
 
@@ -132,12 +139,55 @@ const Home = () => {
           Welcome back <span id="tiger-heading">tiger</span>,
         </h1>
       </header>
-      <div className="grid grid-cols-12 gap-4 mx-64 relative w-auto z-10">
-        <div className="hidden overflow-visible relative lg:flex lg:flex-col lg:gap-3 lg:col-span-2 pr-4 mt-10">
-          Side bar
+      <div className="grid grid-cols-12 max-w-7xl mx-auto relative w-auto z-10">
+        <div className="hidden overflow-visible relative lg:flex lg:flex-col lg:gap-6 lg:col-span-2 pr-4 mt-10">
+        <Link className="flex" href="/">
+              <Newspaper
+                className="self-center mr-1"
+                size={24}
+                color="#000000"
+                strokeWidth={1}
+                absoluteStrokeWidth
+              />
+              <div className="text-2xl">Home</div>
+                  </Link>
+                  <hr />
+
+            <Link className="flex" href="/">
+              <Vote
+                className="self-center mr-1"
+                size={24}
+                color="#000000"
+                strokeWidth={1}
+                absoluteStrokeWidth
+              />
+              <div className="text-2xl">Politics</div>
+            </Link>
+
+            <Link className="flex" href="/">
+              <Bike
+                className="self-center mr-1"
+                size={24}
+                color="#000000"
+                strokeWidth={1}
+                absoluteStrokeWidth
+              />
+              <div className="text-2xl">Sports</div>
+                  </Link>
+                  
+                  <Link className="flex" href="/">
+              <Briefcase
+                className="self-center mr-1"
+                size={24}
+                color="#000000"
+                strokeWidth={1}
+                absoluteStrokeWidth
+              />
+              <div className="text-2xl">JobBoard</div>
+            </Link>
         </div>
 
-        <div className="flex flex-col justify-center flex-wrap content-center gap-4 col-span-10 lg:col-span-8 xl:col-span-6 lg:px-16 mt-10">
+        <div className="flex flex-col justify-center flex-wrap content-center gap-4 col-span-10 lg:col-span-10 xl:col-span-8 lg:px-16 mt-10">
           <button
             onClick={() => setShowForm(!showForm)}
             className="mb-4 rounded-lg py-2 px-4 text-center text-white bg-green-400 hover:bg-green-500"
@@ -207,7 +257,12 @@ const Home = () => {
           ))}
         </div>
         {/* <Posts /> */}
-        <div className="hidden lg:block lg:col-span-4 mt-10">Side bar 2</div>
+              <div className="hidden lg:block lg:col-span-2 mt-10">
+                  <div className="border rounded-xl p-2 h-96 w-auto">
+                      <h2 className="font-bold text-lg p-1">latest on TuBlog</h2>
+                      <hr />
+          </div>
+        </div>
       </div>
     </div>
   );
