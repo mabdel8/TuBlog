@@ -23,7 +23,7 @@ const SportsComponent = () => {
       <div className="articles-list">
         {articles.map((article, index) => (
           <div key={index} className="container bg-white shadow-md rounded-2xl p-5 my-2">
-            <a href={article.url} target="_blank" rel="noopener noreferrer">
+            <a href={article.href} target="_blank" rel="noopener noreferrer">
               <h3 className="font-bold text-xl text-yellow-500">{article.title}</h3>
               <img src={article.url} alt={article.title} className="w-full h-auto mt-2 rounded-md"/>
             </a>
