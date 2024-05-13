@@ -38,7 +38,7 @@ const Home = () => {
     const fetchPosts = async () => {
       try {
         const response = await axios.get("https://tu-blog-server.vercel.app/api/posts");
-        // const response = await axios.get("http://localhost:5000/api/posts");
+        // const response = await axios.get("http://localhost:5500/api/posts");
         setPosts(response.data);
         // Sort posts by date and get the latest ones
         const sortedPosts = response.data.sort(
@@ -61,13 +61,13 @@ const Home = () => {
       try {
         const { data } = await axios.post(
           "https://tu-blog-server.vercel.app",
-          // "http://localhost:5000/",
+          // "http://localhost:5500/",
           {},
           {
             headers: {
-              Authorization: `Bearer ${cookies.token}`
+              Authorization: `Bearer ${cookies.token}`,
             },
-            withCredentials: true
+            withCredentials: true,
           }
         );
 
@@ -77,27 +77,48 @@ const Home = () => {
           console.log("User verified:", user);
         } else {
           console.log("Invalid token");
-          removeCookie("token", { path: '/' });
+          removeCookie("token", { path: "/" });
           navigate("/login");
         }
       } catch (error) {
         console.error("Error verifying token:", error);
-        removeCookie("token", { path: '/' });
+        removeCookie("token", { path: "/" });
         navigate("/login");
       }
     };
 
     verifyToken();
   }, [cookies, navigate, removeCookie]);
-  const Logout = () => {
-    removeCookie("token");
-    navigate("/signup");
+
+  const Logout = async () => {
+    try {
+      const { data } = await axios.post(
+        // "http://localhost:5500/logout",
+        "https://tu-blog-server.vercel.app/logout",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${cookies.token}`,
+          },
+          withCredentials: true,
+        }
+      );
+      if (data.status) {
+        removeCookie("token", { path: "/" });
+        setUsername(null);
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+      removeCookie("token", { path: "/" });
+      navigate("/login");
+    }
   };
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        // const response = await axios.get("http://localhost:5000/api/posts");
+        // const response = await axios.get("http://localhost:5500/api/posts");
         const response = await axios.get("https://tu-blog-server.vercel.app/api/posts");
         setPosts(response.data);
       } catch (error) {
@@ -120,7 +141,7 @@ const Home = () => {
       // Add currentUser.id to the new post data
       // console.log(currentUser);
       const res = await axios.get(
-        // `http://localhost:5000/api/users/${username}`
+        // `http://localhost:5500/api/users/${username}`
         `https://tu-blog-server.vercel.app/api/users/${username}`
       );
       console.log(res.data);
@@ -129,7 +150,7 @@ const Home = () => {
         author: res.data._id,
       };
       const response = await axios.post(
-        // "http://localhost:5000/api/posts",
+        // "http://localhost:5500/api/posts",
         "https://tu-blog-server.vercel.app/api/posts",
         postData,
         {
@@ -152,12 +173,12 @@ const Home = () => {
 
   const handleSportClick = () => {
     setShowSports(!showSports);
-  }
+  };
 
   const handleDelete = async (postId) => {
     try {
       const response = await axios.delete(
-        // `http://localhost:5000/api/posts/${postId}`,
+        // `http://localhost:5500/api/posts/${postId}`,
         `https://tu-blog-server.vercel.app/api/posts/${postId}`,
         {
           headers: { Authorization: `Bearer ${cookies.token}` },
