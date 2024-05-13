@@ -14,6 +14,7 @@ import {
   Bookmark,
   Heart,
   Apple,
+  Trash,
 } from "lucide-react";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import SportsComponent from "../SportsComponent";
@@ -409,7 +410,16 @@ const foodSpots = [
                     </button>
                     <div>Attending: {counter }</div>
 </div>
-)}
+                )}
+                
+                {post.author.username === username && (
+      <button
+        onClick={() => handleDelete(post._id)}
+        className="ml-2 my-2 px-2 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600 relative right-12"
+      >
+        <Trash size={20} />
+      </button>
+    )}
                 <textarea
                   id="post"
                   rows="1"
