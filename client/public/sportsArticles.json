@@ -1,0 +1,14 @@
+{
+    "sportsArticles" : [
+        {
+            "title" : "Baseball Falls to William & Mary in Series Rubber Match",
+            "url" : "https://towsontigers.com/images/2024/5/12/dickerson.png?width=540&height=304&mode=crop&scale=both&format=jpg&quality=80",
+            "date" : "5.12.24"
+        },
+        {
+            "title" : "Towson Track & Field Picks Up One Gold Medal, Three Silver and Three Bronze On Final Day Of CAA Championship To Take Fifth Place",
+            "url" : "https://towsontigers.com/images/2024/5/11/CAA_final_recap.png?width=540&height=304&mode=crop&scale=both&format=jpg&quality=80",
+            "date" : "5.11.24"
+        }
+    ]
+}

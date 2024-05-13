@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
 
       try {
         const { data } = await axios.post(
-          "https://tu-blog-server.vercel.app/api/users/verifyToken",
+          "http://localhost:3000/api/users/verifyToken",
           {},
           {
             headers: {

@@ -15,6 +15,7 @@ import {
   Heart,
 } from "lucide-react";
 import { formatDistanceToNow, parseISO } from "date-fns";
+import SportsComponent from "../SportsComponent";
 
 const Home = () => {
   const { currentUser } = useAuth();
@@ -22,6 +23,7 @@ const Home = () => {
   const [cookies, removeCookie] = useCookies([]);
   const [username, setUsername] = useState("");
   const [showForm, setShowForm] = useState(false);
+  const [showSports, setShowSports] = useState(false);
   const [posts, setPosts] = useState([]);
   const [latestPosts, setLatestPosts] = useState([]);
   const [newPost, setNewPost] = useState({
@@ -36,6 +38,7 @@ const Home = () => {
     const fetchPosts = async () => {
       try {
         const response = await axios.get("https://tu-blog-server.vercel.app/api/posts");
+        // const response = await axios.get("http://localhost:5000/api/posts");
         setPosts(response.data);
         // Sort posts by date and get the latest ones
         const sortedPosts = response.data.sort(
@@ -51,25 +54,40 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    const verifyCookie = async () => {
-      if (!cookies.token) {
-        console.log("No token found");
+    const verifyToken = async () => {
+      // Introduce a slight delay to ensure cookies are loaded
+      // await new Promise(resolve => setTimeout(resolve, 200)); // 200ms delay
+
+      try {
+        const { data } = await axios.post(
+          "https://tu-blog-server.vercel.app",
+          // "http://localhost:5000/",
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${cookies.token}`
+            },
+            withCredentials: true
+          }
+        );
+
+        const { status, user } = data;
+        if (status) {
+          setUsername(user);
+          console.log("User verified:", user);
+        } else {
+          console.log("Invalid token");
+          removeCookie("token", { path: '/' });
+          navigate("/login");
+        }
+      } catch (error) {
+        console.error("Error verifying token:", error);
+        removeCookie("token", { path: '/' });
         navigate("/login");
       }
-      const { data } = await axios.post(
-        "https://tu-blog-server.vercel.app",
-        {},
-        { withCredentials: true }
-      );
-      const { status, user } = data;
-      setUsername(user);
-      return status
-        ? toast(`Hello ${user}`, {
-            position: "top-right",
-          })
-        : (removeCookie("token"), navigate("/login"));
     };
-    verifyCookie();
+
+    verifyToken();
   }, [cookies, navigate, removeCookie]);
   const Logout = () => {
     removeCookie("token");
@@ -79,6 +97,7 @@ const Home = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        // const response = await axios.get("http://localhost:5000/api/posts");
         const response = await axios.get("https://tu-blog-server.vercel.app/api/posts");
         setPosts(response.data);
       } catch (error) {
@@ -101,6 +120,7 @@ const Home = () => {
       // Add currentUser.id to the new post data
       // console.log(currentUser);
       const res = await axios.get(
+        // `http://localhost:5000/api/users/${username}`
         `https://tu-blog-server.vercel.app/api/users/${username}`
       );
       console.log(res.data);
@@ -109,6 +129,7 @@ const Home = () => {
         author: res.data._id,
       };
       const response = await axios.post(
+        // "http://localhost:5000/api/posts",
         "https://tu-blog-server.vercel.app/api/posts",
         postData,
         {
@@ -129,9 +150,14 @@ const Home = () => {
     }
   };
 
+  const handleSportClick = () => {
+    setShowSports(!showSports);
+  }
+
   const handleDelete = async (postId) => {
     try {
       const response = await axios.delete(
+        // `http://localhost:5000/api/posts/${postId}`,
         `https://tu-blog-server.vercel.app/api/posts/${postId}`,
         {
           headers: { Authorization: `Bearer ${cookies.token}` },
@@ -181,7 +207,7 @@ const Home = () => {
       </header>
       <div className="grid grid-cols-12 max-w-7xl mx-auto relative w-auto z-10">
         <div className="hidden overflow-visible relative lg:flex lg:flex-col lg:gap-6 lg:col-span-2 pr-4 mt-10">
-          <Link className="flex" href="/">
+          <Link className="flex" onClick={() => setShowSports(false)}>
             <Newspaper
               className="self-center mr-1"
               size={24}
@@ -204,7 +230,7 @@ const Home = () => {
             <div className="text-2xl">Politics</div>
           </Link>
 
-          <Link className="flex" href="/">
+          <Link className="flex" onClick={() => setShowSports(true)}>
             <Bike
               className="self-center mr-1"
               size={24}
@@ -305,50 +331,60 @@ const Home = () => {
               )
             )}
           </select>
-          {filteredPosts.map((post) => (
-            <div
-              key={post._id}
-              className="container bg-white shadow-md rounded-2xl p-5"
-            >
-              <Link to={`/article/${post._id}`}>
-                <h1 className="font-bold text-xl text-yellow-500">
-                  {post.title}
-                </h1>
-              </Link>
-              <p className="font-light text-gray-500">{post.content}</p>
-              <p className="font-medium text-gray-700">
-                Author: {post.author.username}
-              </p>
-              <p className="mb-2">Category: {post.category}</p>
-              <textarea
-                id="post"
-                rows="1"
-                className="resize-none outline-none w-full px-0  text-gray-900 mt-2 bg-white border-0 block font-sans text-base antialiased font-light leading-relaxed text-inherit"
-                placeholder={`Add A Comment...`}
-                required
-              ></textarea>
-              <div className="flex gap-2 justify-end">
-                <a href="">
-                  <Bookmark
-                    className="self-center mr-1 relative top-2"
-                    size={24}
-                    color="#000000"
-                    strokeWidth={1}
-                    absoluteStrokeWidth
-                  />
-                </a>
-                <a href="">
-                  <Heart
-                    className="self-center mr-1 relative top-2"
-                    size={24}
-                    color="#000000"
-                    strokeWidth={1}
-                    absoluteStrokeWidth
-                  />
-                </a>
+          {!showSports &&
+            filteredPosts.map((post) => (
+              <div
+                key={post._id}
+                className="container bg-white shadow-md rounded-2xl p-5"
+              >
+                <Link to={`/article/${post._id}`}>
+                  <h1 className="font-bold text-xl text-yellow-500">
+                    {post.title}
+                  </h1>
+                </Link>
+                <p className="font-light text-gray-500">{post.content}</p>
+                <p className="font-medium text-gray-700">
+                  Author: {post.author.username}
+                </p>
+                <p className="mb-2">Category: {post.category}</p>
+                <textarea
+                  id="post"
+                  rows="1"
+                  className="resize-none outline-none w-full px-0  text-gray-900 mt-2 bg-white border-0 block font-sans text-base antialiased font-light leading-relaxed text-inherit"
+                  placeholder={`Add A Comment...`}
+                  required
+                ></textarea>
+                <div className="flex gap-2 justify-end">
+                  {post.category === "job" && (
+                    <a
+                      href=""
+                      className="bg-blue-500 text-white p-2 rounded-lg"
+                    >
+                      Apply
+                    </a>
+                  )}
+                  <a href="">
+                    <Bookmark
+                      className="self-center mr-1 relative top-2"
+                      size={24}
+                      color="#000000"
+                      strokeWidth={1}
+                      absoluteStrokeWidth
+                    />
+                  </a>
+                  <a href="">
+                    <Heart
+                      className="self-center mr-1 relative top-2"
+                      size={24}
+                      color="#000000"
+                      strokeWidth={1}
+                      absoluteStrokeWidth
+                    />
+                  </a>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          {showSports && <SportsComponent />}
         </div>
         {/* <Posts /> */}
         <div className="hidden lg:block lg:col-span-2 mt-10">
