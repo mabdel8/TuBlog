@@ -3,12 +3,20 @@
         {
             "title" : "Baseball Falls to William & Mary in Series Rubber Match",
             "url" : "https://towsontigers.com/images/2024/5/12/dickerson.png?width=540&height=304&mode=crop&scale=both&format=jpg&quality=80",
-            "date" : "5.12.24"
+            "date" : "5.12.24",
+            "href": "https://towsontigers.com/news/2024/5/12/baseball-towson-falls-to-william-mary-in-series-rubber-match.aspx"
         },
         {
             "title" : "Towson Track & Field Picks Up One Gold Medal, Three Silver and Three Bronze On Final Day Of CAA Championship To Take Fifth Place",
             "url" : "https://towsontigers.com/images/2024/5/11/CAA_final_recap.png?width=540&height=304&mode=crop&scale=both&format=jpg&quality=80",
-            "date" : "5.11.24"
+            "date" : "5.11.24",
+            "href": "https://towsontigers.com/news/2024/5/11/towson-track-field-picks-up-one-gold-medal-three-silver-and-three-bronze-on-final-day-of-caa-championship-to-take-fifth-place.aspx"
+        },
+        {
+            "title" : "Towson Track & Field Picks Up One Gold Medal, Three Silver and Three Bronze On Final Day Of CAA Championship To Take Fifth Place",
+            "url" : "https://towsontigers.com/images/2024/5/12/LARY1309.JPG?width=1920&quality=80&format=jpg",
+            "date" : "5.11.24",
+            "href": "https://towsontigers.com/news/2024/5/12/mens-lacrosse-first-half-lead-does-not-hold-as-no-12-15-towson-mens-lacrosse-falls-to-no-4-syracuse-in-ncaa-first-round.aspx"
         }
     ]
 }

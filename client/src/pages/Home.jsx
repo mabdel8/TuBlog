@@ -13,9 +13,11 @@ import {
   Briefcase,
   Bookmark,
   Heart,
+  Apple,
 } from "lucide-react";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import SportsComponent from "../SportsComponent";
+import FoodSpotComponent from "../FoodSpotComponent";
 
 const Home = () => {
   const { currentUser } = useAuth();
@@ -24,6 +26,7 @@ const Home = () => {
   const [username, setUsername] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [showSports, setShowSports] = useState(false);
+  const [showPage, setShowPage] = useState('home');
   const [posts, setPosts] = useState([]);
   const [latestPosts, setLatestPosts] = useState([]);
   const [newPost, setNewPost] = useState({
@@ -33,7 +36,24 @@ const Home = () => {
   });
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
-  const categories = ["fun", "politics", "sports", "job", "technology"];
+  const categories = ["select category...","fun", "politics", "sports", "job", "technology"];
+  const thePages = ["sports", "food", "home"];
+  const [counter, setCounter] = useState(0);
+
+  const handleButtonClick = () => {
+    setCounter(counter + 1);
+  };
+
+const foodSpots = [
+  { name: "Sushi Ichiban", address: "1238 Putty Hill Ave Ste 9B, Towson, MD 21286", images: ["https://lh3.googleusercontent.com/p/AF1QipN89SBZe9-ypyiSsZylPRED6WMQpJFxVp7KRzwL=s1360-w1360-h1020", "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?output=thumbnail&cb_client=lu.gallery.gps&panoid=1pL_SZDmWHOF93P-kZh2OA&w=243&h=174&thumb=2&yaw=357.88373&pitch=0", "https://lh3.googleusercontent.com/p/AF1QipOJxJx5DRQNe06ZjGDBCpDV18OIsH8RDLKwD8zp=s1360-w1360-h1020"] },
+  { name: "Towson Diner", address: "718 York Rd, Towson, MD 21204", images: ["https://lh3.googleusercontent.com/p/AF1QipPVCuDbZ_mMLgGdBH9PlAFvg7LbYwuxt6A-HgQq=s1360-w1360-h1020", "https://lh3.googleusercontent.com/p/AF1QipNCSIk-D6I93lTwHUAcaGbh-1MyHGSoMXq1O1lY=s1360-w1360-h1020", "https://lh3.googleusercontent.com/p/AF1QipMDOqyvz3X3N-XZ_v_cL5hkf_OhbDOqsEIk6Toy=s1360-w1360-h1020"] },
+  { name: "Nacho Mama's", address: "2 W Pennsylvania Ave, Towson, MD 21204", images: ["https://lh3.googleusercontent.com/p/AF1QipPDXobckWG_mBh9frfTuLzmf655k-JD4XlWJ3pR=s1360-w1360-h1020", "https://lh3.googleusercontent.com/p/AF1QipNPwlO8nDk8HMAYLXMJ3tg04YVWpCBIdKJr6Ae6=s1360-w1360-h1020", "https://lh3.googleusercontent.com/p/AF1QipNf-oOweuToGV4NIyo4BNhoaQwrExafyPHyj5V_=s1360-w1360-h1020"] },
+  { name: "The Point in Towson", address: "523 York Rd, Towson, MD 21204", images: ["https://lh3.googleusercontent.com/p/AF1QipNvbxHbIsDMyTSkezlLqypxspKlallXcL46e1mH=s1360-w1360-h1020", "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?output=thumbnail&cb_client=lu.gallery.gps&panoid=trkkKQMI1gLFQEB8wmrlsg&w=243&h=174&thumb=2&yaw=268.9903&pitch=0", "https://lh3.googleusercontent.com/p/AF1QipMVLmIN8AifesvurCP2ii75slxNMX2_JFsOmA5D=s1360-w1360-h1020"] },
+  { name: "Charles Village Pub", address: "19 W Pennsylvania Ave, Towson, MD 21204", images: ["https://lh3.googleusercontent.com/p/AF1QipOhO1sbdVuCF9JplRGos2Ez0g06uPZ0zzerhJJW=s1360-w1360-h1020", "https://lh3.googleusercontent.com/p/AF1QipNuQ1GcntcB4axM_t0HME5QiePIBjqqqEdugqCj=s1360-w1360-h1020", "https://lh3.googleusercontent.com/proxy/sj8Xe6mW5uCI0o0wMWq-PMh9mn4tx4u3YyAKGYAQoQJv2viIgjut7vNjok7etIi0EC6p5GTvDJFcaPOLWdFmgyuNDXNe6wJEgexJO6J_Yu54w-VRS3fUEMMVIkC0CDFdcp9UnlnxaNbkzVHc5-kGENGNSSdWC9E=s1360-w1360-h1020"] },
+  { name: "New Generation Hot Pot", address: "413 York Rd, Towson, MD 21204", images: ["https://lh3.googleusercontent.com/p/AF1QipPVY9-EXn7AXnsUzjhqiWEiSqltq369mlxl0P0=s1360-w1360-h1020", "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?output=thumbnail&cb_client=lu.gallery.gps&panoid=JPYBjIkvCGLWsILgJyvW5w&w=243&h=174&thumb=2&yaw=275.53528&pitch=0", "https://lh3.googleusercontent.com/p/AF1QipMwRzAwWT1vChvgt58xkMq_WEaiG61rCmTqN1Be=s1360-w1360-h1020"] },
+  { name: "7 West Bistro Grille", address: "7 W Chesapeake Ave, Towson, MD 21204", images: ["https://lh3.googleusercontent.com/p/AF1QipN36LgpcfSLczcWWp6WWAN9M66Aol7g_OEgK0K5=s1360-w1360-h1020", "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?output=thumbnail&cb_client=lu.gallery.gps&panoid=fycu1afom_pgFtG9dU9FVQ&w=243&h=174&thumb=2&yaw=186.1986&pitch=0", "https://lh3.googleusercontent.com/p/AF1QipNwHoRidnZ3y3KqOpNW40gqR8cYRFljepcYuhTH=s1360-w1360-h1020"] }
+  ];
+  
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -228,7 +248,7 @@ const Home = () => {
       </header>
       <div className="grid grid-cols-12 max-w-7xl mx-auto relative w-auto z-10">
         <div className="hidden overflow-visible relative lg:flex lg:flex-col lg:gap-6 lg:col-span-2 pr-4 mt-10">
-          <Link className="flex" onClick={() => setShowSports(false)}>
+          <Link className="flex" onClick={() => setShowPage('home')}>
             <Newspaper
               className="self-center mr-1"
               size={24}
@@ -251,7 +271,7 @@ const Home = () => {
             <div className="text-2xl">Politics</div>
           </Link>
 
-          <Link className="flex" onClick={() => setShowSports(true)}>
+          <Link className="flex" onClick={() => setShowPage('sports')}>
             <Bike
               className="self-center mr-1"
               size={24}
@@ -260,6 +280,17 @@ const Home = () => {
               absoluteStrokeWidth
             />
             <div className="text-2xl">Sports</div>
+          </Link>
+
+          <Link className="flex" onClick={() => setShowPage('food')}>
+            <Apple
+              className="self-center mr-1"
+              size={24}
+              color="#000000"
+              strokeWidth={1}
+              absoluteStrokeWidth
+            />
+            <div className="text-2xl">Food Spots</div>
           </Link>
 
           <Link className="flex" href="/">
@@ -352,7 +383,7 @@ const Home = () => {
               )
             )}
           </select>
-          {!showSports &&
+          {showPage === 'home' &&
             filteredPosts.map((post) => (
               <div
                 key={post._id}
@@ -368,6 +399,17 @@ const Home = () => {
                   Author: {post.author.username}
                 </p>
                 <p className="mb-2">Category: {post.category}</p>
+                {post.category === 'fun' && (
+  <div className='flex justify-between'>
+  <button
+    className="mt-4 px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-transform transform hover:scale-105"
+    onClick={handleButtonClick}
+  >
+    I'll Be There!
+                    </button>
+                    <div>Attending: {counter }</div>
+</div>
+)}
                 <textarea
                   id="post"
                   rows="1"
@@ -405,7 +447,8 @@ const Home = () => {
                 </div>
               </div>
             ))}
-          {showSports && <SportsComponent />}
+          {showPage === 'sports' && <SportsComponent />}
+          {showPage === 'food' && <FoodSpotComponent foodSpots={foodSpots} user={username} />}
         </div>
         {/* <Posts /> */}
         <div className="hidden lg:block lg:col-span-2 mt-10">
