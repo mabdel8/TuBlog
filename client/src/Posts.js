@@ -8,6 +8,7 @@ const Posts = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        // const response = await axios.get('http://localhost:5000/api/posts');
         const response = await axios.get('https://tu-blog-server.vercel.app/api/posts');
         setPosts(response.data);
       } catch (error) {
