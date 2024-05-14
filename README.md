@@ -42,7 +42,7 @@ TuBlog is a full-stack blog application built using the MERN stack (MongoDB, Exp
    ```bash
    git clone https://github.com/yourusername/tublog.git
    cd tublog
-   
+   ```
 2. **Install backend dependencies:**
    ```bash
    cd server
@@ -50,25 +50,25 @@ TuBlog is a full-stack blog application built using the MERN stack (MongoDB, Exp
 
 3. **Install frontend dependencies:**
    ```bash
-  cd ../client
-  npm install
+   cd ../client
+   npm install
 
 
 4. **Create a .env file in the server directory and add your environment variables:**
    ```bash
-  TOKEN_KEY=your_jwt_secret_key
-  MONGODB_URI=your_mongodb_connection_string
+   TOKEN_KEY=your_jwt_secret_key
+   MONGODB_URI=your_mongodb_connection_string
 
 
 5. **Start the backend server:**
    ```bash
-  cd ../server
-  npm start
+   cd ../server
+   npm start
 
 6. **Start the frontend development server:**
    ```bash
-  cd ../client
-  npm start
+   cd ../client
+   npm start
 
 ##Screenshots
 
