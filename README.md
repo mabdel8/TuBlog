@@ -1,4 +1,5 @@
 # TuBlog
+![Home Page](https://github.com/mabdel8/TuBlog/blob/main/client/public/addscreensc.png)
 
 TuBlog is a full-stack blog application built using the MERN stack (MongoDB, Express, React, Node.js). The app features user authentication, CRUD operations, and different categories for posts. Additionally, users can leave reviews on food spots and indicate their attendance for fun events.
 
@@ -7,10 +8,8 @@ TuBlog is a full-stack blog application built using the MERN stack (MongoDB, Exp
 - [Features](#features)
 - [Technologies Used](#technologies-used)
 - [Installation](#installation)
-- [Usage](#usage)
 - [Screenshots](#screenshots)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 
@@ -70,7 +69,12 @@ TuBlog is a full-stack blog application built using the MERN stack (MongoDB, Exp
    cd ../client
    npm start
 
-##Screenshots
+## Screenshots
+### Food Page
+![Food Page](https://github.com/mabdel8/TuBlog/blob/main/client/public/foodscreensc.png)
 
+### Login Page
+![Login Page](https://github.com/mabdel8/TuBlog/blob/main/client/public/loginscreensc.png)
 
-
+## Contributing
+Contributions are welcome! Please open an issue or submit a pull request with your improvements.
